@@ -1,15 +1,14 @@
 var PORT = 1111;
 
-var nodeStatic = require('node-static');
-
+var NodeStatic = require('node-static');
 var WebSocketServer = require('ws').Server;
 
-var staticServer = new nodeStatic.Server('./public');
+var staticServer = new NodeStatic.Server('./public');
 
 var httpServer = require('http').createServer(function(request, response) {
     request.addListener('end', function() {
         if(request.method == 'POST') {
-            buzz();
+            broadcast('buzz');
             response.writeHead(204);
             response.end();
         }
@@ -30,11 +29,10 @@ websocketServer.on('connection', function(connection) {
     });
 });
 
-function buzz() {
+function broadcast(message) {
     connections.forEach(function(c) {
-        c.send('buzz', function(e) {
-            if(e)
-                console.error(e);
+        c.send(message, function(e) {
+            if(e) console.error(e);
         });
     });
 }

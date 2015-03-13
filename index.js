@@ -7,8 +7,10 @@ var staticServer = new NodeStatic.Server('./public');
 
 var httpServer = require('http').createServer(function(request, response) {
     request.addListener('end', function() {
+        var sender = request.connection.remoteAddress;
+
         if(request.method == 'POST') {
-            broadcast('buzz');
+            broadcast('buzz', JSON.stringify({from: sender}));
             response.writeHead(204);
             response.end();
         }
@@ -28,9 +30,9 @@ sse.on('connection', function(client) {
     });
 });
 
-function broadcast(message) {
+function broadcast(event, data) {
     connections.forEach(function(c) {
-        c.send(message);
+        c.send(event, data);
     });
 }
 

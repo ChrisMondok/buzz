@@ -1,7 +1,7 @@
 var PORT = 1111;
 
 var NodeStatic = require('node-static');
-var WebSocketServer = require('ws').Server;
+var SSE = require('sse');
 
 var staticServer = new NodeStatic.Server('./public');
 
@@ -17,23 +17,20 @@ var httpServer = require('http').createServer(function(request, response) {
     }).resume();
 });
 
-var websocketServer = new WebSocketServer({server: httpServer});
-
 var connections = [];
 
-websocketServer.on('connection', function(connection) {
-    connections.push(connection);
+var sse = new SSE(httpServer);
+sse.on('connection', function(client) {
+    connections.push(client);
 
-    connection.on('close', function() {
-        connections.splice(connections.indexOf(connection), 1);
+    client.on('close', function() {
+        connections.splice(connections.indexOf(client));
     });
 });
 
 function broadcast(message) {
     connections.forEach(function(c) {
-        c.send(message, function(e) {
-            if(e) console.error(e);
-        });
+        c.send(message);
     });
 }
 

@@ -9,6 +9,6 @@
   "author": "Chris Mondok",
   "dependencies": {
     "node-static": "^0.7.6",
-    "ws": "^0.7.1"
+    "sse": "0.0.6"
   }
 }

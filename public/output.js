@@ -1,11 +1,9 @@
 addEventListener('load', function() {
-    var ws = new WebSocket('ws://'+location.host);
+    var es = new EventSource(location.origin+'/sse');
 
-    ws.addEventListener('message', function(message) {
-        if(message.data == 'buzz') {
-            console.log('buzz');
+    es.addEventListener('message', function(message) {
+        if(message.data == 'buzz')
             buzz();
-        }
     });
 });
 

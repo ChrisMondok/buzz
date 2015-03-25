@@ -1,4 +1,5 @@
 var PORT = 1111;
+var version = '1.2.2';
 
 var NodeStatic = require('node-static');
 var SSE = require('sse');
@@ -24,6 +25,8 @@ var connections = [];
 var sse = new SSE(httpServer);
 sse.on('connection', function(client) {
     connections.push(client);
+
+    client.send('version', version);
 
     client.on('close', function() {
         connections.splice(connections.indexOf(client));

@@ -1,13 +1,23 @@
 if('EventSource' in window)
-    subscribeToBuzzes();
+    subscribe();
 else
     alert('Your browser does not support EventSource. You will not hear anything.');
 
-function subscribeToBuzzes() {
+function subscribe() {
     var es = new EventSource(location.origin+'/sse');
+
+    var version = undefined;
 
     es.addEventListener('buzz', function(buzzEvent) {
         buzz();
+    });
+
+    es.addEventListener('version', function(versionEvent) {
+        var newVersion = versionEvent.data;
+        if(!version)
+            version = newVersion;
+        if(version != newVersion)
+            location.reload();
     });
 }
 

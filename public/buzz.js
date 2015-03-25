@@ -13,6 +13,7 @@ function subscribeToBuzzes() {
 
 function buzz() {
     var sound = getSound();
+    sound.currentTime = 0;
     sound.play();
     animateButton(sound.duration);
 }

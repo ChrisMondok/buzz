@@ -26,6 +26,8 @@ var sse = new SSE(httpServer);
 sse.on('connection', function(client) {
     connections.push(client);
 
+    client.req.setTimeout(0);
+
     client.send('version', version);
 
     client.on('close', function() {

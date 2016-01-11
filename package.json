@@ -2,6 +2,7 @@
   "name": "buzz",
   "version": "1.0.0",
   "repository": "https://github.com/chrismondok/buzz",
+  "license": "WTFPL",
   "description": "A remote-controlled buzzing sound",
   "main": "index.js",
   "scripts": {
